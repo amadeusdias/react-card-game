@@ -14,8 +14,22 @@ class App extends React.Component {
       inputImg: '',
       inputSelectCategory: '',
       inputSuper: false,
+      isSaveButtonDisabled: false,
+      // deck: [],
     };
   }
+
+  // buttonValidation = () => {
+  //   const {
+  //     inputName,
+  //     inputDescription,
+  //     inputImg,
+  //     inputSelectCategory,
+  //     inputAtrr1,
+  //     inputAtrr2,
+  //     inputAtrr3,
+  //   } = this.state;
+  // }
 
   handleChange = ({ target }) => {
     const { name, value, type, checked } = target;
@@ -33,6 +47,8 @@ class App extends React.Component {
       inputImg,
       inputSelectCategory,
       inputSuper,
+      isSaveButtonDisabled,
+      // deck,
     } = this.state;
 
     return (
@@ -48,6 +64,7 @@ class App extends React.Component {
           cardRare={ inputSelectCategory }
           cardTrunfo={ inputSuper }
           onInputChange={ this.handleChange }
+          isSaveButtonDisabled={ isSaveButtonDisabled }
         />
         <Card
           cardName={ inputName }
