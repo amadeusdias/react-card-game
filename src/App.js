@@ -47,10 +47,24 @@ class App extends React.Component {
     });
   }
 
-  // trunfoCheck = () => {
-  //   const { deck } = this.state;
-  //   deck.some((cart) => cart.cardTrunfo);
-  // }
+ killkCard = ({ target }) => {
+   // const { hasTrunfo } = this.state;
+   const { deck } = this.state;
+   const { name } = target;
+   // const { hastrunfo } = target;
+   const getDeck = deck.filter((card) => card.cardName !== name);
+   const getTrunfo = deck.some((card) => card.cardTrunfo);
+   if (getTrunfo === true) {
+     this.setState({
+       deck: getDeck,
+       hasTrunfo: false,
+     });
+   } else {
+     this.setState({
+       deck: getDeck,
+     });
+   }
+ }
 
   onSaveButtonClick = () => {
     const {
@@ -156,23 +170,34 @@ class App extends React.Component {
           onInputChange={ this.handleChange }
           hasTrunfo={ hasTrunfo }
         />
-        { deck.length === 0
-          ? <p>Nenhuma carta foi feita ainda!</p>
-          : (
-            deck.map((carta) => (
-              <div key={ carta.cardName }>
-                <Card
-                  cardName={ carta.cardName }
-                  cardDescription={ carta.cardDescription }
-                  cardAttr1={ carta.cardAttr1 }
-                  cardAttr2={ carta.cardAttr2 }
-                  cardAttr3={ carta.cardAttr3 }
-                  cardImage={ carta.cardImage }
-                  cardRare={ carta.cardRare }
-                  cardTrunfo={ carta.cardTrunfo }
-                />
-              </div>
-            )))}
+        <ul>
+          { deck.length === 0
+            ? <p>Nenhuma carta foi feita ainda!</p>
+            : (
+
+              deck.map((carta) => (
+                <div key={ carta.cardName }>
+                  <Card
+                    cardName={ carta.cardName }
+                    cardDescription={ carta.cardDescription }
+                    cardAttr1={ carta.cardAttr1 }
+                    cardAttr2={ carta.cardAttr2 }
+                    cardAttr3={ carta.cardAttr3 }
+                    cardImage={ carta.cardImage }
+                    cardRare={ carta.cardRare }
+                    cardTrunfo={ carta.cardTrunfo }
+                  />
+                  <button
+                    data-testid="delete-button"
+                    type="button"
+                    onClick={ this.killkCard }
+                    name={ carta.cardName }
+                  >
+                    Excluir Carta
+                  </button>
+                </div>
+              )))}
+        </ul>
       </div>
     );
   }
