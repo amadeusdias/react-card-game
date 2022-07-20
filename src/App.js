@@ -16,7 +16,7 @@ class App extends React.Component {
       cardTrunfo: false,
       isSaveButtonDisabled: true,
       hasTrunfo: false,
-      nameFilter: '',
+      rareFilter: '',
       // onInputChange: '',
       // onSaveButtonClick: '',
       deck: [],
@@ -49,10 +49,8 @@ class App extends React.Component {
   }
 
  killkCard = ({ target }) => {
-   // const { hasTrunfo } = this.state;
    const { deck } = this.state;
    const { name } = target;
-   // const { hastrunfo } = target;
    const getDeck = deck.filter((card) => card.cardName !== name);
    const getTrunfo = deck.some((card) => card.cardTrunfo);
    if (getTrunfo === true) {
@@ -131,9 +129,18 @@ class App extends React.Component {
     const { value } = target;
     const { deck } = this.state;
     const filtro = deck.filter((carta) => carta.cardName.includes(value));
+    // const raridade = deck.filter((carta) => cata.cardRare.includes(value));
     this.setState({
       deck: filtro,
     });
+  }
+
+  filter = (cartas) => {
+    const { rareFilter } = this.state;
+    if (rareFilter === 'todas') {
+      return cartas;
+    }
+    return cartas.cardRare === rareFilter;
   }
 
   render() {
@@ -148,7 +155,7 @@ class App extends React.Component {
       cardTrunfo,
       isSaveButtonDisabled,
       deck,
-      // nameFilter,
+      rareFilter,
       hasTrunfo,
     } = this.state;
 
@@ -190,6 +197,19 @@ class App extends React.Component {
           // value={ nameFilter }
           placeholder="Pesquisar por nome"
         />
+        <select
+          type="text"
+          name="rareFilter"
+          data-testid="rare-filter"
+          onChange={ this.handleChange }
+          value={ rareFilter }
+          placeholder="Pesquisar por raridade"
+        >
+          <option value="todas">Todas</option>
+          <option value="normal">Normal</option>
+          <option value="raro">Raro</option>
+          <option value="muito raro">Muito Rara</option>
+        </select>
 
         <ul>
           { deck.length === 0
@@ -197,7 +217,7 @@ class App extends React.Component {
             : (
 
               deck
-                // .filter((cartas) => this.deckFilter(cartas))
+                .filter((cartas) => (this.filter(cartas)))
                 .map((carta) => (
                   <div key={ carta.cardName }>
                     <Card
