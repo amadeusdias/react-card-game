@@ -16,7 +16,8 @@ class App extends React.Component {
       cardTrunfo: false,
       isSaveButtonDisabled: true,
       hasTrunfo: false,
-      rareFilter: '',
+      rareFilter: 'todas',
+      nameFilter: '',
       // onInputChange: '',
       // onSaveButtonClick: '',
       deck: [],
@@ -125,22 +126,21 @@ class App extends React.Component {
     } else { this.setState({ isSaveButtonDisabled: true }); }
   }
 
-  deckFilter = ({ target }) => {
-    const { value } = target;
-    const { deck } = this.state;
-    const filtro = deck.filter((carta) => carta.cardName.includes(value));
-    // const raridade = deck.filter((carta) => cata.cardRare.includes(value));
-    this.setState({
-      deck: filtro,
-    });
-  }
+  // deckFilter = ({ target }) => {
+  //   const { value } = target;
+  //   const { deck } = this.state;
+  //   const filtro = deck.filter((carta) => carta.cardName.includes(value));
+  //   this.setState({
+  //     deck: filtro,
+  //   });
+  // }
 
   filter = (cartas) => {
-    const { rareFilter } = this.state;
+    const { rareFilter, nameFilter } = this.state;
     if (rareFilter === 'todas') {
-      return cartas;
+      return cartas.cardName.includes(nameFilter);
     }
-    return cartas.cardRare === rareFilter;
+    return cartas.cardName.includes(nameFilter) && cartas.cardRare === rareFilter;
   }
 
   render() {
@@ -156,6 +156,7 @@ class App extends React.Component {
       isSaveButtonDisabled,
       deck,
       rareFilter,
+      nameFilter,
       hasTrunfo,
     } = this.state;
 
@@ -193,8 +194,8 @@ class App extends React.Component {
           type="text"
           name="nameFilter"
           data-testid="name-filter"
-          onChange={ this.deckFilter }
-          // value={ nameFilter }
+          onChange={ this.handleChange }
+          value={ nameFilter }
           placeholder="Pesquisar por nome"
         />
         <select
