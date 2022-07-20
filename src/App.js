@@ -16,6 +16,7 @@ class App extends React.Component {
       cardTrunfo: false,
       isSaveButtonDisabled: true,
       hasTrunfo: false,
+      nameFilter: '',
       // onInputChange: '',
       // onSaveButtonClick: '',
       deck: [],
@@ -126,6 +127,15 @@ class App extends React.Component {
     } else { this.setState({ isSaveButtonDisabled: true }); }
   }
 
+  deckFilter = ({ target }) => {
+    const { value } = target;
+    const { deck } = this.state;
+    const filtro = deck.filter((carta) => carta.cardName.includes(value));
+    this.setState({
+      deck: filtro,
+    });
+  }
+
   render() {
     const {
       cardName,
@@ -138,6 +148,7 @@ class App extends React.Component {
       cardTrunfo,
       isSaveButtonDisabled,
       deck,
+      // nameFilter,
       hasTrunfo,
     } = this.state;
 
@@ -170,33 +181,45 @@ class App extends React.Component {
           onInputChange={ this.handleChange }
           hasTrunfo={ hasTrunfo }
         />
+
+        <input
+          type="text"
+          name="nameFilter"
+          data-testid="name-filter"
+          onChange={ this.deckFilter }
+          // value={ nameFilter }
+          placeholder="Pesquisar por nome"
+        />
+
         <ul>
           { deck.length === 0
             ? <p>Nenhuma carta foi feita ainda!</p>
             : (
 
-              deck.map((carta) => (
-                <div key={ carta.cardName }>
-                  <Card
-                    cardName={ carta.cardName }
-                    cardDescription={ carta.cardDescription }
-                    cardAttr1={ carta.cardAttr1 }
-                    cardAttr2={ carta.cardAttr2 }
-                    cardAttr3={ carta.cardAttr3 }
-                    cardImage={ carta.cardImage }
-                    cardRare={ carta.cardRare }
-                    cardTrunfo={ carta.cardTrunfo }
-                  />
-                  <button
-                    data-testid="delete-button"
-                    type="button"
-                    onClick={ this.killkCard }
-                    name={ carta.cardName }
-                  >
-                    Excluir Carta
-                  </button>
-                </div>
-              )))}
+              deck
+                // .filter((cartas) => this.deckFilter(cartas))
+                .map((carta) => (
+                  <div key={ carta.cardName }>
+                    <Card
+                      cardName={ carta.cardName }
+                      cardDescription={ carta.cardDescription }
+                      cardAttr1={ carta.cardAttr1 }
+                      cardAttr2={ carta.cardAttr2 }
+                      cardAttr3={ carta.cardAttr3 }
+                      cardImage={ carta.cardImage }
+                      cardRare={ carta.cardRare }
+                      cardTrunfo={ carta.cardTrunfo }
+                    />
+                    <button
+                      data-testid="delete-button"
+                      type="button"
+                      onClick={ this.killkCard }
+                      name={ carta.cardName }
+                    >
+                      Excluir Carta
+                    </button>
+                  </div>
+                )))}
         </ul>
       </div>
     );
